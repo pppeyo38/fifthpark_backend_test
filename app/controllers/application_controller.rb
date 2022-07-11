@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
-		# 各コントローラーはApplicationControllerを継承
-		# よってここでメソッドを定義すればどのコントローラーでも使用できる！
-		include ActionController::HttpAuthentication::Token::ControllerMethods
+	# 各コントローラーはApplicationControllerを継承
+	# よってここでメソッドを定義すればどのコントローラーでも使用できる！
+	include ActionController::HttpAuthentication::Token::ControllerMethods
 
     def current_user
         authenticate_with_http_token do |id_token, options|
