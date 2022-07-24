@@ -1,16 +1,13 @@
 class ApplicationController < ActionController::API
     include ActionController::HttpAuthentication::Token::ControllerMethods
-    before_action :authenticate_user!
 
     def current_user
-        authenticate_with_http_token do |id_token, options|
-            begin
-                uid = FirebaseUtils::Auth.verify_id_token(id_token)[:uid]
-                @current_user ||= User.find_by(firebase_id: uid)
-            rescue => e
-                Rails.logger.error(e.message)
-                nil
-            end
+        authenticate_with_http_token do |id_token, _options|
+            uid = FirebaseAuth.verify_id_token(id_token)[:uid]
+            @current_user ||= User.find_by(firebase_id: uid)
+        rescue => e
+            Rails.logger.error(e.message)
+            nil
         end
     end
 
@@ -24,7 +21,7 @@ class ApplicationController < ActionController::API
     end
 
     def render_unauthorized
-        obj = { message: "token invalid" }
+        obj = { message: 'token invalid' }
         render json: obj, status: :unauthorized
     end
 end
