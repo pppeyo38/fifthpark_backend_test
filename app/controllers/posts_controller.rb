@@ -2,8 +2,9 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[ show update destroy ]
 
   # GET /posts
+  # ログイン中のユーザーが持っているPost全件
   def index
-    @posts = Post.all
+    @posts = Post.find_by(user_id: @current_user.id)
 
     render json: @posts
   end
@@ -46,6 +47,6 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body, :published)
+      params.require(:post).permit(:title, :content, :user_id)
     end
 end
