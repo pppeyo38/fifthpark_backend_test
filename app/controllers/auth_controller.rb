@@ -7,7 +7,7 @@ class AuthController < ApplicationController
       @firebase_user = FirebaseAuth.create_user(email: params[:email], password: params[:password])
       @user = User.create!(
         **user_params,
-        firebase_uid: @firebase_user.local_id
+        firebase_id: @firebase_user.local_id
       )
     end
 
@@ -16,9 +16,9 @@ class AuthController < ApplicationController
       email: @firebase_user.email
     }, status: :created
   rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.message }, status: :unprocessable_entity
+    render json: { errors: e.message, text: "auth_controller.rb:19" }, status: :unprocessable_entity
   rescue Google::Apis::Error, StandardError => e
-    render json: { error: e.message }, status: :internal_server_error
+    render json: { error: e.message, text: "auth_controller.rb:21" }, status: :internal_server_error
   end
 
   private

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
 
     def current_user
         authenticate_with_http_token do |id_token, _options|
-            uid = FirebaseAuth.verify_id_token(id_token)["uid"]
+            uid = FirebaseAuth.verify_id_token(id_token)['uid']
             @current_user ||= User.find_by(firebase_uid: uid)
         rescue StandardError => e
             Rails.logger.error(e.message)

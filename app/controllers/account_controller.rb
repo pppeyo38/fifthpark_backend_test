@@ -1,5 +1,5 @@
 class AccountController < ApplicationController
-  # GET /profile
+  # GET /account
   def show
     @email = FirebaseAuth.get_user(uid: @current_user.firebase_uid).email
     render json: {
